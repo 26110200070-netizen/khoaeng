@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KhoaEng - Luyện Trắc Nghiệm Tiếng Anh THPT 2026</title>
+
+    <!-- Vietnamese Standard Fonts: Be Vietnam Pro & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- External CDNs: Markdown Parser, Chart.js, Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Top App Bar / Header (Clean, minimalist, no icon logo) -->
+        <header class="app-header">
+            <div class="brand-wrapper" id="brand-logo" onclick="window.location.reload()">
+                <span class="brand-name">KhoaEng</span>
+                <span class="brand-badge">THPT 2026</span>
+            </div>
+
+            <div class="header-actions">
+                <!-- Sound Toggle Button -->
+                <button class="btn-icon" id="btn-sound-toggle" title="Âm thanh học tập">
+                    <svg id="sound-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                </button>
+
+                <!-- AI Chat Open Button -->
+                <button class="btn-icon" id="btn-open-chat" title="Hỏi gia sư Khoa Eng">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </button>
+
+                <!-- Settings Button -->
+                <button class="btn-icon" id="btn-open-settings" title="Cài đặt & API">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ===================================================================
+             SCREEN 1: HOME & EXAM SETUP (Frameless, Clean Editorial Layout)
+             =================================================================== -->
+        <main class="screen-view active" id="screen-home">
+            <!-- Header Intro (No boxed container) -->
+            <div class="page-intro">
+                <span class="sub-label">Định dạng mới GDPT 2018</span>
+                <h1 class="page-title">Luyện Trắc Nghiệm Tiếng Anh THPT 2026</h1>
+                <p class="page-desc">
+                    Tập trung vào năng lực đọc hiểu thông báo, sắp xếp câu logic và ngữ pháp thực chiến theo cấu trúc đề thi chính thức của Bộ GD&ĐT.
+                </p>
+            </div>
+
+            <!-- Configuration Options (Direct on page, no boxed card wrapping) -->
+            <div class="setup-block">
+                <!-- Question Count Selector (Min 12 - Max 20) -->
+                <div class="block-header">
+                    <label class="block-title">Số câu hỏi trắc nghiệm</label>
+                    <span class="count-badge" id="count-display">12 câu</span>
+                </div>
+                
+                <div class="slider-wrapper">
+                    <input type="range" class="clean-slider" id="count-slider" min="12" max="20" step="1" value="12">
+                    <div class="slider-pills">
+                        <button class="pill-btn active" data-count="12">12 câu</button>
+                        <button class="pill-btn" data-count="15">15 câu</button>
+                        <button class="pill-btn" data-count="18">18 câu</button>
+                        <button class="pill-btn" data-count="20">20 câu</button>
+                    </div>
+                </div>
+
+                <!-- 2026 Exam Structure Checklist (Clean, subtle list) -->
+                <div class="format-summary">
+                    <span class="format-pill">• Đọc thông báo / tờ rơi</span>
+                    <span class="format-pill">• Sắp xếp thứ tự logic câu</span>
+                    <span class="format-pill">• Điền từ đoạn văn khuyết</span>
+                    <span class="format-pill">• Đọc hiểu & ngữ pháp</span>
+                </div>
+
+                <!-- Section: Chỉ tập trung (Exclusive Focus Mode) -->
+                <div class="focus-control-block">
+                    <div class="focus-title-bar">
+                        <div class="focus-title-text">
+                            <span class="focus-tag">Chế độ</span>
+                            <span class="focus-name">Chỉ tập trung</span>
+                        </div>
+                        <label class="clean-switch" title="Bật/Tắt chế độ chỉ tập trung">
+                            <input type="checkbox" id="focus-toggle">
+                            <span class="switch-track"></span>
+                        </label>
+                    </div>
+                    <p class="focus-desc-text">
+                        Khi bật, đề thi sẽ <strong>chỉ tạo 100%</strong> các câu hỏi thuộc đúng những dạng hoặc chuyên đề bạn chọn hoặc gõ dưới đây.
+                    </p>
+                    
+                    <div class="focus-topics-container" id="focus-topics-list">
+                        <button type="button" class="focus-chip" data-topic="Thì động từ">Thì động từ</button>
+                        <button type="button" class="focus-chip" data-topic="Câu bị động">Câu bị động</button>
+                        <button type="button" class="focus-chip" data-topic="Câu điều kiện">Câu điều kiện</button>
+                        <button type="button" class="focus-chip" data-topic="Mạo từ (a/an/the)">Mạo từ (a/an/the)</button>
+                        <button type="button" class="focus-chip" data-topic="Mệnh đề quan hệ">Mệnh đề quan hệ</button>
+                        <button type="button" class="focus-chip" data-topic="Sắp xếp câu logic">Sắp xếp câu logic</button>
+                        <button type="button" class="focus-chip" data-topic="Đọc điền thông báo">Đọc điền thông báo</button>
+                        <button type="button" class="focus-chip" data-topic="Đọc hiểu văn bản">Đọc hiểu văn bản</button>
+                        <button type="button" class="focus-chip" data-topic="Đảo ngữ">Đảo ngữ</button>
+                        <button type="button" class="focus-chip" data-topic="Collocations & Phrasal verbs">Collocations & Phrasal verbs</button>
+                    </div>
+
+                    <div class="focus-custom-wrap">
+                        <input type="text" class="clean-input" id="focus-custom-input" placeholder="Hoặc tự gõ dạng bài cần ôn (VD: Đảo ngữ loại 3, bị động kép...)">
+                    </div>
+                </div>
+
+                <!-- Custom Requirements (Clean, frameless input) -->
+                <div class="custom-block">
+                    <div class="block-header">
+                        <label class="block-title">Yêu cầu thêm (Chi tiết nội dung)</label>
+                    </div>
+                    <textarea class="clean-textarea" id="custom-req-input" placeholder="Nhập thêm chi tiết nếu cần: Ví dụ: Cho bài tập về chủ đề môi trường, từ vựng lớp 12..."></textarea>
+                    
+                    <div class="tag-row">
+                        <button class="text-tag" data-tag="Thì động từ">+ Thì động từ</button>
+                        <button class="text-tag" data-tag="Câu bị động">+ Câu bị động</button>
+                        <button class="text-tag" data-tag="Câu điều kiện">+ Câu điều kiện</button>
+                        <button class="text-tag" data-tag="Mạo từ (a/an/the)">+ Mạo từ (a/an/the)</button>
+                        <button class="text-tag" data-tag="Mệnh đề quan hệ">+ Mệnh đề quan hệ</button>
+                        <button class="text-tag" data-tag="Sắp xếp câu">+ Sắp xếp câu</button>
+                        <button class="text-tag" data-tag="Đảo ngữ">+ Đảo ngữ</button>
+                        <button class="text-tag" data-tag="Đọc thông báo">+ Đọc thông báo</button>
+                    </div>
+                </div>
+
+                <!-- Start Action Button -->
+                <button class="btn-main-action" id="btn-start-exam">
+                    Bắt Đầu Làm Đề
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Loading Indicator for AI Generation -->
+            <div class="loading-state" id="loading-box">
+                <div class="clean-spinner"></div>
+                <div class="loading-text">Khoa Eng đang tạo đề thi THPT 2026...</div>
+                <div class="loading-subtext">Đang tối ưu ngữ liệu theo yêu cầu và đảm bảo đề không trùng lặp</div>
+            </div>
+        </main>
+
+        <!-- ===================================================================
+             SCREEN 2: QUIZ TAKING EXPERIENCE (Clean, Direct Reading Canvas)
+             =================================================================== -->
+        <main class="screen-view" id="screen-quiz">
+            <!-- Quiz Sticky Top Bar -->
+            <div class="quiz-top-bar">
+                <button class="btn-icon" id="btn-quit-quiz" title="Dừng bài thi">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+
+                <div class="timer-display">
+                    <span id="quiz-timer">00:00</span>
+                </div>
+
+                <div class="progress-meta">
+                    <button class="btn-clean-text" id="btn-quiz-chat" title="Hỏi gia sư Khoa Eng">Hỏi Khoa Eng</button>
+                    <span class="progress-count" id="quiz-progress-text">Câu 1/12</span>
+                    <button class="btn-clean-text" id="btn-open-grid" title="Danh sách câu">Mục lục</button>
+                </div>
+            </div>
+
+            <!-- Progress Track -->
+            <div class="progress-line">
+                <div class="progress-bar-fill" id="quiz-progress-bar"></div>
+            </div>
+
+            <!-- Question Canvas (Direct, open layout) -->
+            <div id="question-container">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Quiz Navigation Controls (Fixed Bottom) -->
+            <div class="quiz-bottom-bar">
+                <div class="bottom-bar-inner">
+                    <button class="btn-nav-prev" id="btn-prev-q">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                        Trước
+                    </button>
+
+                    <button class="btn-nav-next" id="btn-next-q">
+                        Tiếp theo
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </button>
+
+                    <button class="btn-nav-submit" id="btn-submit-quiz" style="display: none;">
+                        Nộp Bài Thi
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===================================================================
+             SCREEN 3: RESULTS & DEEP DIAGNOSTIC (Open Editorial Report)
+             =================================================================== -->
+        <main class="screen-view" id="screen-results">
+            <!-- Score Overview (Frameless) -->
+            <div class="score-overview">
+                <div class="score-big-number">
+                    <span class="score-value" id="res-score-num">8.5</span>
+                    <span class="score-base">/10</span>
+                </div>
+                <h2 class="score-headline" id="res-score-title">Xuất Sắc! Nắm Rất Chắc Kiến Thức!</h2>
+                
+                <div class="score-meta-row">
+                    <span>Đúng: <strong id="res-correct-count">10/12</strong></span>
+                    <span>•</span>
+                    <span>Chính xác: <strong id="res-accuracy">83%</strong></span>
+                    <span>•</span>
+                    <span>Thời gian: <strong id="res-time-spent">12m 45s</strong></span>
+                </div>
+            </div>
+
+            <!-- Action Buttons (Clean & minimal) -->
+            <div class="results-action-row">
+                <button class="btn-action-primary" id="btn-repeat-exam">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <polyline points="1 20 1 14 7 14"/>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                    </svg>
+                    Tiếp Tục Tạo Đề Không Trùng
+                </button>
+                <div class="action-btn-pair">
+                    <button class="btn-action-subtle" id="btn-download-report">
+                        In / Tải Kết Quả
+                    </button>
+                    <button class="btn-action-subtle" id="btn-back-home">
+                        Về Trang Chủ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Knowledge Competency Chart (Frameless canvas) -->
+            <div class="report-section">
+                <h3 class="section-heading">Biểu Đồ Năng Lực Kiến Thức</h3>
+                <div class="chart-box">
+                    <canvas id="knowledgeRadarChart" height="260"></canvas>
+                </div>
+            </div>
+
+            <!-- AI Deep Diagnostic (Clean Report Format with Table Support) -->
+            <div class="report-section">
+                <div class="diagnostic-meta">
+                    <h3 class="section-heading">Phân Tích Chuyên Sâu Từ Khoa Eng</h3>
+                    <p class="section-subtext">Đánh giá điểm mạnh, lỗ hổng kiến thức & chiến lược bứt phá 2026</p>
+                </div>
+                <div class="diagnostic-content-flow" id="diagnostic-content">
+                    <!-- Rendered by AI with full markdown table support -->
+                </div>
+            </div>
+
+            <!-- Detailed Question Review (Clean question list) -->
+            <div class="report-section">
+                <h3 class="section-heading">Xem Lại Chi Tiết Từng Câu</h3>
+                <div class="review-items-flow" id="review-list">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </main>
+
+        <!-- ===================================================================
+             AI CHAT "KHOA ENG" (Seamless Edge-to-Edge Experience with Table Support)
+             =================================================================== -->
+        <button class="chat-fab-pill" id="chat-fab-btn" title="Hỏi Khoa Eng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span>Hỏi Khoa Eng</span>
+        </button>
+
+        <!-- Seamless Chat Screen / View (No heavy outer boxed frames) -->
+        <div class="chat-view-layer" id="chat-drawer">
+            <div class="chat-container">
+                <div class="chat-navbar">
+                    <div class="chat-title-group">
+                        <div class="chat-main-name">Gia Sư Khoa Eng</div>
+                        <div class="chat-sub-status">Hỏi đáp ngữ pháp & cấu trúc đề 2026</div>
+                    </div>
+                    <button class="btn-icon" id="chat-close-btn" title="Đóng chat">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Chat conversation stream (Clean, natural text flow, full GFM table rendering) -->
+                <div class="chat-stream" id="chat-messages">
+                    <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Prompt chips for quick questions -->
+                <div class="chat-chips-tray">
+                    <button class="chat-chip">Bảng so sánh thì hiện tại hoàn thành và quá khứ đơn</button>
+                    <button class="chat-chip">Mẹo làm dạng sắp xếp câu logic?</button>
+                    <button class="chat-chip">Bảng công thức câu điều kiện loại 1, 2, 3</button>
+                    <button class="chat-chip">Cấu trúc đề THPT 2026 mới</button>
+                </div>
+
+                <!-- Chat input area -->
+                <div class="chat-input-bar">
+                    <input type="text" class="chat-text-input" id="chat-input" placeholder="Hỏi thầy Khoa về ngữ pháp, kẻ bảng so sánh, từ vựng...">
+                    <button class="chat-submit-btn" id="chat-send-btn" title="Gửi câu hỏi">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             QUESTION GRID MODAL (Mobile Bottom Sheet)
+             =================================================================== -->
+        <div class="modal-backdrop" id="grid-modal">
+            <div class="clean-sheet">
+                <div class="sheet-header">
+                    <h3 class="sheet-title">Mục Lục Câu Hỏi</h3>
+                    <button class="btn-icon" id="grid-close-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="question-grid" id="grid-container">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             SETTINGS MODAL
+             =================================================================== -->
+        <div class="modal-backdrop" id="settings-modal" style="align-items: center;">
+            <div class="clean-modal-card">
+                <div class="sheet-header">
+                    <h3 class="sheet-title">Cài Đặt Cấu Hình AI</h3>
+                    <button class="btn-icon" id="settings-close-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="setting-field">
+                    <label class="setting-label">Groq API Key</label>
+                    <input type="password" class="clean-input" id="input-api-key" placeholder="gsk_...">
+                </div>
+
+                <div class="setting-field">
+                    <label class="setting-label">AI Model</label>
+                    <select class="clean-input" id="select-model">
+                        <option value="openai/gpt-oss-20b">openai/gpt-oss-20b (Mặc định)</option>
+                        <option value="openai/gpt-oss-120b">openai/gpt-oss-120b</option>
+                        <option value="qwen/qwen3.8-27b">qwen/qwen3.8-27b</option>
+                    </select>
+                </div>
+
+                <div id="api-status-msg" style="font-size:0.85rem; margin-bottom:14px; min-height:18px;"></div>
+
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-action-subtle" id="btn-test-api" style="flex:1;">
+                        Kiểm Tra Kết Nối
+                    </button>
+                    <button class="btn-action-primary" id="btn-save-settings" style="flex:1;">
+                        Lưu Cài Đặt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="audio.js"></script>
+    <script src="ai.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
